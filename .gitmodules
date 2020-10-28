@@ -1,0 +1,3 @@
+[submodule "modulo1/gostack-desafio2"]
+	path = modulo1/gostack-desafio2
+	url = git@github.com:Alcsaw/gostack-desafio2.git
