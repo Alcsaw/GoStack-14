@@ -1,8 +1,10 @@
-import { request, Router } from 'express';
+import { Router } from 'express';
 
 const routes = Router();
 
-routes.get('/', (request, response) => response.json({ status: 'OK' }));
+routes.get('/', (request, response) => {
+  return response.json({ status: 'OK' });
+});
 
 routes.post('/users', (request, response) => {
   const { name, email } = request.body;

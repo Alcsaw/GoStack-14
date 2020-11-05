@@ -2,10 +2,10 @@
 
 ## Backend com Node.js e TypeScript
 
-Na primeira parte deste módulo, criamos um projeto Node e configuramos o TypeScript, o EditorConfig, o ESLint e o debug do VSCode.
+Na primeira parte deste módulo, criamos um projeto Node e configuramos o TypeScript, o EditorConfig, o ESLint, Prettier e o debug do VSCode.
 
 ### Typescript
-Para configurar o TypeScript, instalamos e iniciamos o tsc. Depois disso, alteramos apenas 2 configurações no tsconfig.json:
+Para configurar o TypeScript, instalamos e iniciamos o tsc. Depois disso, alteramos apenas 2 configurações no [tsconfig.json](/tsconfig.json):
 - `"outDir": "./dist",` para que o código transpilado seja todo salvo na pasta `dist` na raíz do projeto;
 - `"rootDir": "./src",` para que a o compilador entenda que código desenvolvido da aplicação começa a partir da pasta `src`.
 
@@ -22,6 +22,14 @@ Para isso, nas configurações do VSCode foi adicionada a opção:
 },
 ```
 Essa opção fica disponível com a instalação da extensão ESLint.
+
+### Prettier
+Enquanto o ESLint marca erros no código, inclusive referentes a formatação do código, e sugere as devidas correções, o Prettier vai fazer a refatoração do código inteiro para garantir que as regras de formatação estejam sendo seguidas, de forma bem opinada e sem deixar margem para o programador escolher opções de formatação. Dessa forma, garante-se que o código siga o padrão de estilo de forma coerente entre todos desenvolvedores do projeto.
+
+Para resolver os conflitos entre as regras do ESLint e as regras do Prettier, foram definidas as seguintes regras no arquivo [prettier.config.js](/prettier.config.js):
+- `singleQuote` para utilizar aspas simples;
+- `trailingComma` para sempre adicionar vírgula ao final de um objeto que tenha sido quebrado em várias linhas;
+- `arrowParens` para que não seja adicionado parênteses quando uma Arrow Function tiver apenas um parâmetro.
 
 ### Debug do VSCode
 Ao criar uma configuração de debug, foram modificadas as seguintes configurações:
