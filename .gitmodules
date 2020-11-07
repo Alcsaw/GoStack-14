@@ -7,3 +7,6 @@
 [submodule "modulo1/gostack-desafio4"]
 	path = modulo1/gostack-desafio4
 	url = git@github.com:Alcsaw/gostack-desafio4.git
+[submodule "nível02/gostack-desafio5"]
+	path = nível02/gostack-desafio5
+	url = git@github.com:Alcsaw/gostack-desafio5.git
