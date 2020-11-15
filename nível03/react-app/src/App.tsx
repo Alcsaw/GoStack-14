@@ -6,7 +6,9 @@ import GlobalStyle from './styles/global';
 
 const App: React.FC = () => (
   <>
-    <BrowserRouter><Routes /></BrowserRouter>
+    <BrowserRouter>
+      <Routes />
+    </BrowserRouter>
     <GlobalStyle />
   </>
 );
