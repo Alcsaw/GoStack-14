@@ -1,52 +1,83 @@
-import React from 'react';
+import React, { FormEvent, useState } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
+
+import api from '../../services/api';
 
 import logoImg from '../../assets/logo.svg';
 
-import { Title, Form, Repositories } from './styles';
+import { Title, Form, Repositories, Error } from './styles';
 
-const Dashboard: React.FC = () => (
-  <>
-    <img src={logoImg} alt="Github Explore" />
-    <Title>Explore repositórios no Github</Title>
+interface Repository {
+  full_name: string;
+  description: string;
+  owner: {
+    login: string;
+    avatar_url: string;
+  };
+}
 
-    <Form>
-      <input type="text" placeholder="Digite o nome do repositório" />
-      <button type="submit">Pesquisar</button>
-    </Form>
+const Dashboard: React.FC = () => {
+  const [newRepo, setNewRepo] = useState('');
+  const [inputError, setInputError] = useState('');
+  const [repositories, setRepositories] = useState<Repository[]>([]);
 
-    <Repositories>
-      <a href="test">
-        <img src="https://avatars0.githubusercontent.com/u/20111371?s=460&u=11f9cd15c1dd06cc423fc8ecb831dced3c3c30c2&v=4" alt="Alcsaw" />
-        <div>
-          <strong>Alcsaw/nlw-3</strong>
-          <p>Next Level Week 3</p>
-        </div>
+  async function handleAddRepository(
+    event: FormEvent<HTMLFormElement>,
+  ): Promise<void> {
+    event.preventDefault();
 
-        <FiChevronRight size={20} />
-      </a>
+    if (!newRepo) {
+      setInputError('Digite autor/nome do repositório!');
+      return;
+    }
 
-      <a href="test">
-        <img src="https://avatars0.githubusercontent.com/u/20111371?s=460&u=11f9cd15c1dd06cc423fc8ecb831dced3c3c30c2&v=4" alt="Alcsaw" />
-        <div>
-          <strong>Alcsaw/nlw-3</strong>
-          <p>Next Level Week 3</p>
-        </div>
+    try {
+      const response = await api.get<Repository>(`/repos/${newRepo}`);
+      const repository = response.data;
 
-        <FiChevronRight size={20} />
-      </a>
+      setRepositories([...repositories, repository]);
+      setNewRepo('');
+      setInputError('');
+    } catch (err) {
+      setInputError('Erro na busca por esse repositório');
+    }
+  }
 
-      <a href="test">
-        <img src="https://avatars0.githubusercontent.com/u/20111371?s=460&u=11f9cd15c1dd06cc423fc8ecb831dced3c3c30c2&v=4" alt="Alcsaw" />
-        <div>
-          <strong>Alcsaw/nlw-3</strong>
-          <p>Next Level Week 3</p>
-        </div>
+  return (
+    <>
+      <img src={logoImg} alt="Github Explore" />
+      <Title>Explore repositórios no Github</Title>
 
-        <FiChevronRight size={20} />
-      </a>
-    </Repositories>
-  </>
-);
+      <Form hasError={!!inputError} onSubmit={handleAddRepository}>
+        <input
+          type="text"
+          placeholder="Digite o nome do repositório"
+          value={newRepo}
+          onChange={e => setNewRepo(e.target.value)}
+        />
+        <button type="submit">Pesquisar</button>
+      </Form>
+
+      {inputError && <Error>{inputError}</Error>}
+
+      <Repositories>
+        {repositories.map(repository => (
+          <a key={repository.full_name} href="test">
+            <img
+              src={repository.owner.avatar_url}
+              alt={repository.owner.login}
+            />
+            <div>
+              <strong>{repository.full_name}</strong>
+              <p>{repository.description}</p>
+            </div>
+
+            <FiChevronRight size={20} />
+          </a>
+        ))}
+      </Repositories>
+    </>
+  );
+};
 
 export default Dashboard;
